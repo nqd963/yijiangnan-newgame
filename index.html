@@ -3631,7 +3631,7 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
         </div>
         <div class="sg-player-area" id="sgPlayerArea">
           <div class="sg-orb-area" id="sgOrbArea" style="display:none;"></div><div class="sg-orb-tooltip" id="sgOrbTooltip"></div><div class="sg-orb-max" id="sgOrbMax" style="display:none;"></div><div class="sg-player-portrait-wrap">
-            <div class="sg-player-portrait" id="sgPlayerPortrait"><img class="sg-player-portrait-img" src="https://raw.githubusercontent.com/nqd963/yijiangnan-newgame/main/images/lizhi.svg" onerror="this.style.display='none'">🍶</div>
+            <div class="sg-player-portrait" id="sgPlayerPortrait"><img class="sg-player-portrait-img" src="https://raw.githubusercontent.com/nqd963/yijiangnan-newgame/main/images/lizhi.png" onerror="this.style.display='none'">🍶</div>
             <div class="sg-player-name" id="sgPlayerName">诗人</div>
             <div style="height:4px;border-radius:2px;background:var(--border);overflow:hidden;width:80px;margin:2px auto;">
               <div class="sg-hp-fill" id="sgPlayerHpFill" style="width:100%;background:var(--gold);"></div>
@@ -9161,11 +9161,11 @@ applyPoison();
 
 /* ══════ 战斗背景（水墨写意） ══════ */
 var BATTLE_BGS = {
-  act1:"images/battle-bg-1.png",
-  act2:"images/battle-bg-1.png",
-  act3:"images/battle-bg-1.png",
-  elite:"images/battle-bg-2.png",
-  boss:"images/battle-bg-3.png"
+  act1:"https://raw.githubusercontent.com/nqd963/yijiangnan-newgame/main/images/battle-bg-1.png",
+  act2:"https://raw.githubusercontent.com/nqd963/yijiangnan-newgame/main/images/battle-bg-1.png",
+  act3:"https://raw.githubusercontent.com/nqd963/yijiangnan-newgame/main/images/battle-bg-1.png",
+  elite:"https://raw.githubusercontent.com/nqd963/yijiangnan-newgame/main/images/battle-bg-2.png",
+  boss:"https://raw.githubusercontent.com/nqd963/yijiangnan-newgame/main/images/battle-bg-3.png"
 };
 function setBattleBackground(){
   var bgEl = document.querySelector('.sg-battle-bg');
@@ -9512,7 +9512,7 @@ function setBattleBackground(){
       var pClass = G.charId || '';
       var portraitEl = _E['sgPlayerPortrait'];
       if(portraitEl){
-        portraitEl.innerHTML = '<img class="sg-player-portrait-img" src="images/'+G.charId+'.png" onerror="this.style.display=\'none\'">'+pEmoji;
+        portraitEl.innerHTML = '<img class="sg-player-portrait-img" src="https://raw.githubusercontent.com/nqd963/yijiangnan-newgame/main/images/'+G.charId+'.png" onerror="this.style.display=\'none\'">'+pEmoji;
         portraitEl.className = 'sg-player-portrait-icon ' + pClass;
         var wrap = portraitEl.closest('.sg-player-portrait-wrap');
         if(wrap) wrap.className = 'sg-player-portrait-frame sg-player-portrait-wrap';
@@ -13032,7 +13032,7 @@ var charClasses = {lizhi:'sg-char-lizhi',sush:'sg-char-sush',liqing:'sg-char-liq
 var emoji = charEmojis[ch.id] || '📜';
 var cssClass = charClasses[ch.id] || '';
 html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' +
-                '<div class="sg-cs-avatar"><img class="sg-cs-avatar-img" src="https://raw.githubusercontent.com/nqd963/yijiangnan-newgame/main/images/'+ch.id+'.svg" onerror="this.style.display=\'none\'">'+emoji+'</div>' +
+                '<div class="sg-cs-avatar"><img class="sg-cs-avatar-img" src="https://raw.githubusercontent.com/nqd963/yijiangnan-newgame/main/images/'+ch.id+'.png" onerror="this.style.display=\'none\'">'+emoji+'</div>' +
                 '<div class="sg-cs-info-overlay">' +
                 '<div class="sg-cs-char-name">'+ch.name+'</div>' +
                 '<div class="sg-cs-char-title">「'+ch.title+'」</div>' +
@@ -13071,7 +13071,7 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
                   imgContainer.style.cssText = 'width:80%;max-width:500px;aspect-ratio:1/1.1;border-radius:16px;overflow:hidden;position:relative;box-shadow:0 0 60px rgba(201,168,76,.2);';
                   var charEmojis2 = {lizhi:'🌙',sush:'🌊',liqing:'🌸'};
                   var emoji2 = charEmojis2[cid] || '📜';
-                  imgContainer.innerHTML = '<img src="https://raw.githubusercontent.com/nqd963/yijiangnan-newgame/main/images/'+cid+'.svg" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display=\'none\'">' +
+                  imgContainer.innerHTML = '<img src="https://raw.githubusercontent.com/nqd963/yijiangnan-newgame/main/images/'+cid+'.png" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display=\'none\'">' +
                     '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:6rem;opacity:0.3;">' + emoji2 + '</div>';
                   overlay.appendChild(imgContainer);
                   // 角色名
