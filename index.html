@@ -6896,14 +6896,14 @@ return gBattle.energy >= cost;
         showEffectFloat(window.innerWidth/2, window.innerHeight/2-30, '格挡+'+gBattle._blockPerCardPlayed);
       }
 
-      // Remove from hand
-      gBattle.hand.splice(cardIdx, 1);
-
-      // onPlay 回调在费用扣除后执行，避免回调中修改能量/费用导致出牌失败
+      // onPlay 回调在费用扣除后、移出手牌前执行，确保回调能正确访问手牌状态
       if(card.onPlay && typeof card.onPlay === "function"){
         try{ card.onPlay(gBattle); }
         catch(e){ console.warn('[卡牌onPlay] 执行失败:', card.id || card.name, e); }
       }
+
+      // Remove from hand
+      gBattle.hand.splice(cardIdx, 1);
 
       // Calculate damage with bonuses
       var baseDmg = card.dmg || 0;
@@ -7024,7 +7024,7 @@ return gBattle.energy >= cost;
 
       // onCalc callback
       if(card.onCalc && typeof card.onCalc === "function"){
-        try { finalDmg = card.onCalc(finalDmg, card, gBattle) || finalDmg; } catch(e){}
+        try { finalDmg = card.onCalc(finalDmg, card, gBattle) || finalDmg; } catch(e){ console.warn('[卡牌onCalc] 执行失败:', card.id || card.name, e); }
       }
 
       // Enemy debuffs
@@ -7189,7 +7189,6 @@ return gBattle.energy >= cost;
           if(G.deck[gBattle.hand[ei]] && G.deck[gBattle.hand[ei]].type==='attack') atkCount++;
         }
         gBattle.energy += atkCount;
-        gBattle._noExtraEnergy = true;
       }
 
       // === killMaxHp ===
@@ -7512,7 +7511,7 @@ return gBattle.energy >= cost;
         }
                 // onCalcBlock callback
         if(card.onCalcBlock && typeof card.onCalcBlock === "function"){
-          try { blockVal = card.onCalcBlock(blockVal, card, gBattle) || blockVal; } catch(e){}
+          try { blockVal = card.onCalcBlock(blockVal, card, gBattle) || blockVal; } catch(e){ console.warn('[卡牌onCalcBlock] 执行失败:', card.id || card.name, e); }
         }
 gBattle.playerBlock += blockVal;
         // === 金刚怒目：每获得1次格挡对敌人造成伤害 ===
@@ -13333,7 +13332,9 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
       showScreen('sgTitle');
       // 检查存档
       var _contBtn = document.getElementById('sgContinueBtn');
-      if(_contBtn) _contBtn.style.display = (localStorage.getItem(SAVE_KEY) !== null) ? '' : 'none';
+      if(_contBtn){
+        try{ _contBtn.style.display = (localStorage.getItem(SAVE_KEY) !== null) ? '' : 'none'; }catch(e){}
+      }
 
       /* ── 彩蛋系统 ── */
       var konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
