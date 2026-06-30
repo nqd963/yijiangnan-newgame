@@ -1475,7 +1475,7 @@ body.show-pz .poem-line .c .pz{opacity:.75;}
 .sg-enemy{
   display:inline-block;padding:0.8rem 0.9rem 0.7rem;border-radius:14px;
   background:linear-gradient(180deg, #4d413a 0%, #3f3530 100%);
-  border:1px solid rgba(201,168,76,0.2);min-width:170px;position:relative;overflow:visible;
+  border:1px solid rgba(201,168,76,0.25);min-width:170px;position:relative;overflow:visible;
   transition:all .35s cubic-bezier(.4,0,.2,1);box-shadow:0 4px 12px var(--shadow);
   animation:sgEnemyEnter .45s ease-out both;cursor:pointer;
 }
@@ -1484,6 +1484,24 @@ body.show-pz .poem-line .c .pz{opacity:.75;}
   content:'';position:absolute;top:0;left:8%;right:8%;height:2px;
   background:linear-gradient(90deg,transparent,rgba(201,168,76,0.3),transparent);
   border-radius:1px;pointer-events:none;
+}
+/* 精英敌人卡片：紫色调凸显威胁 */
+.sg-enemy.is-elite{
+  background:linear-gradient(180deg, #4a3040 0%, #3a2835 100%);
+  border-color:rgba(168,85,247,0.35);
+  box-shadow:0 4px 16px rgba(168,85,247,0.15),0 4px 12px var(--shadow);
+}
+.sg-enemy.is-elite::before{
+  background:linear-gradient(90deg,transparent,rgba(168,85,247,0.35),transparent);
+}
+/* Boss敌人卡片：红色调凸显威胁 */
+.sg-enemy.is-boss{
+  background:linear-gradient(180deg, #4a2020 0%, #3a1818 100%);
+  border-color:rgba(220,60,40,0.45);
+  box-shadow:0 4px 20px rgba(200,50,30,0.2),0 4px 12px var(--shadow);
+}
+.sg-enemy.is-boss::before{
+  background:linear-gradient(90deg,transparent,rgba(220,60,40,0.4),transparent);
 }
 
 /* 立绘容器 —— 暖色实底画框，完全不透明 */
@@ -2257,7 +2275,7 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
   .sg-cs-portrait-card .sg-cs-avatar{width:80px;height:80px;font-size:2.5rem;}
   .sg-cs-portrait-card .sg-cs-char-name{font-size:1.2rem;}
   .sg-enemy{min-width:260px;padding:1rem 1.5rem;}
-  .sg-enemy-name{font-size:1.4rem;}
+  .sg-enemy-name{font-size:1.4rem;text-shadow:0 1px 4px rgba(0,0,0,0.5);}
   .sg-hand{gap:10px;}
   .sg-shop-items{grid-template-columns:repeat(3,1fr);}
   .sg-floor-badge{font-size:.9rem;padding:.3rem .8rem;}
@@ -9164,11 +9182,11 @@ applyPoison();
 
 /* ══════ 战斗背景（水墨写意） ══════ */
 var BATTLE_BGS = {
-  act1:"https://cdn.jsdelivr.net/gh/nqd963/yijiangnan-newgame@main/battle-bg-1.png",
-  act2:"https://cdn.jsdelivr.net/gh/nqd963/yijiangnan-newgame@main/battle-bg-1.png",
-  act3:"https://cdn.jsdelivr.net/gh/nqd963/yijiangnan-newgame@main/battle-bg-1.png",
-  elite:"https://cdn.jsdelivr.net/gh/nqd963/yijiangnan-newgame@main/battle-bg-2.png",
-  boss:"https://cdn.jsdelivr.net/gh/nqd963/yijiangnan-newgame@main/battle-bg-3.png"
+  act1:"https://cdn.jsdelivr.net/gh/nqd963/yijiangnan-newgame@main/images/battle-bg-1.png",
+  act2:"https://cdn.jsdelivr.net/gh/nqd963/yijiangnan-newgame@main/images/battle-bg-1.png",
+  act3:"https://cdn.jsdelivr.net/gh/nqd963/yijiangnan-newgame@main/images/battle-bg-1.png",
+  elite:"https://cdn.jsdelivr.net/gh/nqd963/yijiangnan-newgame@main/images/battle-bg-2.png",
+  boss:"https://cdn.jsdelivr.net/gh/nqd963/yijiangnan-newgame@main/images/battle-bg-3.png"
 };
 function setBattleBackground(){
   var bgEl = document.querySelector('.sg-battle-bg');
@@ -9381,7 +9399,7 @@ function setBattleBackground(){
         var poison2 = gBattle._groupPoison2 || 0;
         _E['sgEnemyPoison2'].style.display = poison2 > 0 ? '' : 'none';
         var _poiN2=_E['sgEnemyPoisonNum2'];if(_poiN2)_poiN2.textContent=poison2;
-        // 目标选择高亮（Item 7）
+        _E['sgEnemy'].className = 'sg-enemy'+(gBattle.isBoss?' is-boss':gBattle.isElite?' is-elite':'');
         var target = gBattle._selectedTarget || 1;
         var e1El = _E['sgEnemy'];
         var e2El = _E['sgEnemy2'];
@@ -9443,6 +9461,7 @@ function setBattleBackground(){
         _E['sgEnemyPortrait'].onmousemove = function(e){ movePortraitBuffTip(e); };
         _E['sgEnemyPortrait'].onmouseleave = function(){ hidePortraitBuffTip(); };
         _E['sgEnemyName'].textContent = gBattle.name;
+        _E['sgEnemy'].className = 'sg-enemy'+(gBattle.isBoss?' is-boss':gBattle.isElite?' is-elite':'');
         _E['sgEnemyDesc'].textContent = gBattle.desc;
         var abilityNames = {enrage:"🔥暴怒",regen:"💚再生",summon:"👥召唤",curse:"💀诅咒"};
         if(gBattle.specialAbility && abilityNames[gBattle.specialAbility]){
