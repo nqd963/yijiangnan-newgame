@@ -1418,7 +1418,7 @@ body.show-pz .poem-line .c .pz{opacity:.75;}
 /* ── 地图 ── */
 .sg-map-header{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;font-size:1rem;color:var(--text-dim);}
 .sg-relic-bar{display:flex;flex-wrap:wrap;gap:4px;padding:0.15rem 0.3rem;margin:0 auto 0.1rem;justify-content:center;min-height:0;max-height:32px;overflow:hidden;}
-.sg-relic-bar .sg-rb-item{display:inline-flex;align-items:center;gap:2px;font-size:0.75rem;padding:0 4px;border-radius:6px;background:rgba(255,215,0,0.06);border:1px solid rgba(201,168,76,0.15);line-height:1.6;}
+.sg-relic-bar .sg-rb-item{display:inline-flex;align-items:center;gap:2px;font-size:0.75rem;padding:0 4px;border-radius:6px;background:rgba(255,215,0,0.08);border:1px solid rgba(201,168,76,0.2);line-height:1.6;font-weight:500;}
 .sg-map-row{display:flex;gap:12px;justify-content:center;}
 .sg-map-node{
   width:66px;height:66px;border-radius:50%;display:flex;align-items:center;justify-content:center;
@@ -1661,22 +1661,22 @@ body.light .sg-card::before{background:linear-gradient(180deg,rgba(0,0,0,.03) 0%
 .sg-card .sg-card-name.sg-upgraded-name{color:#44dd88;text-shadow:0 0 6px rgba(68,221,136,.3);}
 .sg-card.attack .sg-card-name{
   background:linear-gradient(180deg,rgba(194,58,43,.18),rgba(194,58,43,.04));
-  color:color-mix(in srgb,var(--text),#c23a2b 30%);
+  color:#f0d0c8;
   border-bottom-color:rgba(194,58,43,.2);
 }
 .sg-card.skill .sg-card-name{
   background:linear-gradient(180deg,rgba(59,130,246,.14),rgba(59,130,246,.03));
-  color:color-mix(in srgb,var(--text),#3b82f6 25%);
+  color:#c8d8f0;
   border-bottom-color:rgba(59,130,246,.18);
 }
 .sg-card.power .sg-card-name{
   background:linear-gradient(180deg,rgba(168,85,247,.14),rgba(168,85,247,.03));
-  color:color-mix(in srgb,var(--text),#a855f7 25%);
+  color:#e0c8f0;
   border-bottom-color:rgba(168,85,247,.18);
 }
 .sg-card .sg-card-desc{
-  padding:8px 8px 6px;font-size:.65rem;color:var(--text-faint);
-  line-height:1.35;flex:1;position:relative;z-index:1;
+  padding:8px 8px 6px;font-size:.65rem;color:var(--text-dim);
+  line-height:1.45;flex:1;position:relative;z-index:1;
 }
 .sg-card.attack{border-color:var(--red-seal);}
 .sg-card.attack:hover{border-color:#ef4444;box-shadow:0 12px 28px rgba(194,58,43,.18),inset 0 1px 0 rgba(255,255,255,.1);}
@@ -1824,12 +1824,12 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
 
 /* ── 战斗中重开/牌库按钮 ── */
 .sg-battle-restart{position:absolute;top:.3rem;right:.3rem;font-size:.8rem;
-  padding:.35rem .8rem;background:rgba(20,20,40,.88);color:var(--text,#e0e0e0);
-  border:1px solid var(--border,#555);border-radius:6px;cursor:pointer;z-index:100;
-  opacity:.85;transition:all .18s;font-family:inherit;
+  padding:.35rem .8rem;background:rgba(30,25,50,.92);color:#f0ece6;
+  border:1px solid rgba(201,168,76,0.35);border-radius:6px;cursor:pointer;z-index:100;
+  opacity:.9;transition:all .18s;font-family:inherit;font-weight:600;
   backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
   box-shadow:0 2px 10px rgba(0,0,0,.35);}
-.sg-battle-restart:hover{opacity:1;border-color:var(--gold,#c9a84c);color:var(--gold,#c9a84c);background:rgba(30,30,60,.92);}
+.sg-battle-restart:hover{opacity:1;border-color:var(--gold,#c9a84c);color:var(--gold,#c9a84c);background:rgba(40,35,65,.95);}
 
 /* ── 附魔系统 ── */
 .sg-enchant-overlay{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.6);
@@ -1885,7 +1885,7 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
 
 /* ── 回合控制 ── */
 .sg-turn-ctrl{text-align:center;padding:.15rem 0;}
-.sg-pile-info{text-align:center;font-size:.7rem;color:var(--text-faint);padding:.1rem 0;display:flex;gap:.5rem;justify-content:center;}
+.sg-pile-info{text-align:center;font-size:.7rem;color:var(--text-dim);padding:.1rem 0;display:flex;gap:.5rem;justify-content:center;font-weight:500;}
 
 /* ═══════════════════════════════════════════════════════════════════════ */
 /* ══════ UI整合：战斗界面统一视觉层 ══════ */
@@ -1919,8 +1919,10 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
   min-height: 1.6rem;
 }
 #sgBattle .sg-relic-bar .sg-rb-item {
-  background: rgba(255,215,0,0.05);
-  border-color: rgba(201,168,76,0.12);
+  background: rgba(255,215,0,0.1);
+  border-color: rgba(201,168,76,0.25);
+  font-size: 0.78rem;
+  font-weight: 500;
 }
 
 /* 玩家区域——整块卡牌面板设计 */
@@ -1941,7 +1943,8 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
   justify-content: center;
   padding: 0.2rem 0.15rem;
   font-size: 0.7rem;
-  color: var(--text-dim);
+  color: var(--text);
+  font-weight: 500;
   background: rgba(10,8,20,0.35);
   border: 1px solid rgba(255,255,255,0.04);
   border-radius: 8px;
