@@ -532,7 +532,7 @@ var COLLECTION_CURSE_CARDS = [
 /* ═══════════════════════════ RESET & VARIABLES ═══════════════════════════ */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 /* Touch-friendly defaults */
-html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;font-size:22px;}
+html{touch-action:manipulation;-webkit-tap-highlight-color:transparent;font-size:24px;}
 button,.mp-app,.cipu-tab,.game-btn,.pz-submit,.game-note{touch-action:manipulation;}
 :root{
   --ink-900:#141414;--ink-800:#222222;--ink-700:#333333;
@@ -1992,9 +1992,9 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
   box-shadow: 0 0 16px rgba(201,168,76,0.2);
 }
 .sg-player-name {
-  font-size: 0.75rem;
-  color: var(--text-dim);
-  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text);
+  font-weight: 700;
   letter-spacing: 0.05em;
 }
 /* 玩家HP条美化 */
@@ -2235,26 +2235,26 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
 /* 响应式 */
 @media(min-width:1200px){
   .sg-card{width:155px;font-size:1.1rem;}
-  .sg-card .sg-card-name{padding:9px 10px 7px;font-size:.85rem;}
-  .sg-card .sg-card-desc{padding:10px 10px 8px;font-size:.65rem;}
+  .sg-card .sg-card-name{padding:9px 10px 7px;font-size:.95rem;font-weight:600;color:#f0ebe4;}
+  .sg-card .sg-card-desc{padding:10px 10px 8px;font-size:.72rem;line-height:1.6;color:#ccc4bc;}
   .sg-card .sg-card-cost{width:38px;height:38px;font-size:1rem;line-height:38px;top:-11px;left:-11px;}
   .sg-card .sg-card-type{padding:4px 10px 9px;font-size:.5rem;}
   #sgHand{gap:10px;min-height:150px;}
   #sgHand .sg-card{min-width:130px;}
   .sg-enemy-portrait{width:130px;height:104px;font-size:3rem;}
-  .sg-player-portrait{width:70px;height:70px;font-size:1.8rem;}
+  .sg-player-portrait{width:80px;height:80px;font-size:2rem;}
   .sg-player-portrait-icon{width:70px;height:70px;font-size:1.8rem;}
   .sg-map-node{width:56px;height:56px;font-size:1.2rem;min-width:56px;}
   .sg-btn{font-size:.95rem;padding:.7rem 1.6rem;}
   .sg-title-text{font-size:3.2rem;}
   .sg-screen{font-size:1.05rem;}
-  .sg-status{font-size:.85rem;}
+  .sg-status{font-size:.9rem;font-weight:500;}
   .sg-cs-title{font-size:1.4rem;}
   .sg-cs-portrait-card{width:220px;padding:1.2rem 1rem;}
   .sg-cs-portrait-card .sg-cs-avatar{width:80px;height:80px;font-size:2.5rem;}
   .sg-cs-portrait-card .sg-cs-char-name{font-size:1.2rem;}
   .sg-enemy{min-width:260px;padding:1rem 1.5rem;}
-  .sg-enemy-name{font-size:1.3rem;}
+  .sg-enemy-name{font-size:1.4rem;}
   .sg-hand{gap:10px;}
   .sg-shop-items{grid-template-columns:repeat(3,1fr);}
   .sg-floor-badge{font-size:.9rem;padding:.3rem .8rem;}
@@ -2265,9 +2265,9 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
   #sgBattle{padding:0;contain:content;}
   #sgHand .sg-card{min-width:70px;font-size:0.6rem}
   .sg-card .sg-card-cost{width:26px;height:26px;font-size:.75rem;line-height:26px;top:-8px;left:-8px;}
-  .sg-card .sg-card-name{padding:5px 6px 4px;font-size:0.6rem}
-  .sg-card .sg-card-desc{padding:5px 6px 4px;font-size:0.55rem}
-  .sg-card .sg-card-type{padding:2px 6px 5px;font-size:0.5rem}
+  .sg-card .sg-card-name{padding:5px 6px 4px;font-size:0.72rem;font-weight:600}
+  .sg-card .sg-card-desc{padding:5px 6px 4px;font-size:0.6rem;line-height:1.5}
+  .sg-card .sg-card-cost{width:26px;height:26px;font-size:.8rem;line-height:26px;top:-8px;left:-8px;}
   #sgPlayerArea{display:flex;flex-direction:row;flex-wrap:wrap;gap:0.3rem;align-items:flex-start;justify-content:center}
   #sgEnemyArea{padding:0.2rem;gap:6px}
   .sg-btn{font-size:0.65rem;padding:0.3rem 0.6rem}
@@ -2277,8 +2277,8 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
   .sg-player-portrait{width:40px;height:40px;font-size:1.2rem}
   .sg-player-portrait-icon{width:40px;height:40px;font-size:1.2rem}
   .sg-enemy{padding:.4rem .6rem;min-width:120px}
-  .sg-enemy-name{font-size:.85rem}
-  .sg-status{font-size:.58rem;gap:.25rem}
+  .sg-enemy-name{font-size:.95rem}
+  .sg-status{font-size:.7rem;gap:.25rem}
   .sg-status-item{padding:.15rem .35rem}
   .sg-shop-items{grid-template-columns:repeat(2,1fr)}
   #sgMap{padding:0.3rem}
@@ -2289,10 +2289,11 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
 }
 @media(max-width:480px){
   .sg-card{width:95px;}
-  .sg-card .sg-card-name{padding:4px 5px 3px;font-size:.58rem;}
-  .sg-card .sg-card-desc{padding:4px 5px 3px;font-size:.45rem;}
-  .sg-map-node{width:34px;height:34px;font-size:.8rem;}
-  .sg-status{font-size:.55rem;gap:.2rem;}
+  .sg-card .sg-card-name{padding:4px 5px 3px;font-size:.65rem;font-weight:600}
+  .sg-card .sg-card-desc{padding:4px 5px 3px;font-size:.55rem;line-height:1.5}
+  .sg-card .sg-card-cost{width:22px;height:22px;font-size:.72rem;line-height:22px;top:-7px;left:-7px;}
+  .sg-card .sg-card-type{padding:2px 6px 5px;font-size:0.5rem}
+  #sgHand .sg-card{min-width:60px;font-size:0.55rem}
   .sg-status-item{padding:.12rem .3rem;}
   .sg-title-text{font-size:1.6rem;}
   .sg-cs-card{width:120px;padding:.8rem .4rem;}
@@ -2301,8 +2302,8 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
   .sg-enemy{min-width:100px;padding:.4rem .5rem;}
   .sg-enemy-portrait{font-size:1.6rem;}
   .sg-shop-item{padding:.4rem .6rem;flex-wrap:wrap;}
-  #sgHand .sg-card{min-width:60px;font-size:0.5rem}
-  .sg-card .sg-card-cost{width:22px;height:22px;font-size:.65rem;line-height:22px;top:-7px;left:-7px;}
+  #sgHand .sg-card{min-width:60px;font-size:0.55rem}
+  .sg-card .sg-card-cost{width:22px;height:22px;font-size:.72rem;line-height:22px;top:-7px;left:-7px;}
   #sgPlayerArea{display:flex;flex-direction:column}
   .sg-enemy-portrait{width:60px;height:48px;font-size:1.2rem}
   .sg-player-portrait{width:36px;height:36px;font-size:1rem}
