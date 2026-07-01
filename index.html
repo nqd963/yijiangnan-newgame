@@ -13620,7 +13620,7 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
     /* 音频引擎 */
     function pianoInitAudio(){
       if(!pianoGetAudioCtx()) return;
-      if(audioCtx.state === 'suspended') audioCtx.resume();
+      if(audioCtx.state === 'suspended') audioCtx.resume().catch(function(){});
     }
 
     function pianoPlayNote(idx, oct, vel){
@@ -14078,11 +14078,12 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
     var musicView = document.getElementById('viewMusic');
     var obs = new MutationObserver(function(){
       if(!musicView.classList.contains('active')){
-        audioCtx = pianoGetAudioCtx();
-        if(audioCtx) audioCtx.suspend();
+        releaseAllNotes();
         stopViz();
         if(autoPlaying) stopAuto();
       } else {
+        audioCtx = pianoGetAudioCtx();
+        if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
         setTimeout(initViz, 50);
       }
     });
