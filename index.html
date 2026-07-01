@@ -3490,8 +3490,8 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
     <div class="music-wrap">
       <div class="music-insts" id="musicInsts"></div>
       <div class="music-info">
-        <span class="music-inst-name" id="musicInstName">古琴</span>
-        <span class="music-inst-desc" id="musicInstDesc">太古遗音 · 沉静悠远</span>
+        <span class="music-inst-name" id="musicInstName">钢琴</span>
+        <span class="music-inst-desc" id="musicInstDesc">清亮宽广 · 刚柔并济 · 首选自动演奏</span>
       </div>
       <!-- 自动演奏区 -->
       <div class="music-auto">
@@ -13484,6 +13484,15 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
       audioCtx = getSharedAudioCtx();
       return audioCtx;
     }
+    function pianoEnsureReady(cb){
+      var ctx = pianoGetAudioCtx();
+      if(!ctx) return;
+      if(ctx.state === 'suspended'){
+        ctx.resume().then(function(){ if(typeof cb === 'function') cb(); }).catch(function(){ if(typeof cb === 'function') cb(); });
+      } else {
+        if(typeof cb === 'function') cb();
+      }
+    }
     var autoTimer = null;
     var autoIdx = 0;
     var autoPlaying = false;
@@ -13814,52 +13823,54 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
     var activeNotes = {};
 
     function startNote(idx, oct){
-      if(activeNotes[idx]) releaseNote(idx);
-      pianoInitAudio();
-      var inst = insts[currentInst];
-      var octVal = typeof oct === 'number' ? oct : currentOctave;
-      if(octVal<0) octVal=0; if(octVal>4) octVal=4;
-      var freq = noteFreqs[idx] * octMul[octVal];
-      var now = audioCtx.currentTime;
+      pianoEnsureReady(function(){
+        if(activeNotes[idx]) releaseNote(idx);
+        pianoInitAudio();
+        var inst = insts[currentInst];
+        var octVal = typeof oct === 'number' ? oct : currentOctave;
+        if(octVal<0) octVal=0; if(octVal>4) octVal=4;
+        var freq = noteFreqs[idx] * octMul[octVal];
+        var now = audioCtx.currentTime;
 
-      var masterFilter = null;
-      if (inst.f) {
-        masterFilter = audioCtx.createBiquadFilter();
-        masterFilter.type = inst.f.t || 'lowpass';
-        masterFilter.frequency.setValueAtTime(inst.f.f, now);
-        if (inst.f.qe) { masterFilter.Q.setValueAtTime(inst.f.q||1, now); masterFilter.Q.linearRampToValueAtTime(inst.f.q*5, now+inst.f.qe); }
-        masterFilter.connect(audioCtx.destination);
-      }
-      var harmonics = [{m:1,v:1}];
-      if (inst.h) inst.h.forEach(function(h){ harmonics.push(h); });
-      var oscs = [];
-      harmonics.forEach(function(harm, hi){
-        var osc = audioCtx.createOscillator();
-        var gain = audioCtx.createGain();
-        var dest = masterFilter || audioCtx.destination;
-        osc.connect(gain); gain.connect(dest);
-        osc.type = inst.t;
-        osc.frequency.setValueAtTime(freq*harm.m, now);
-        var maxG = inst.g * harm.v;
-        gain.gain.setValueAtTime(0.001, now);
-        gain.gain.linearRampToValueAtTime(maxG, now+inst.a);
-        osc.start(now);
-        oscs.push({osc:osc, gain:gain, maxG:maxG});
-        if (hi === 0 && inst.vibrato) {
-          var vib = audioCtx.createOscillator();
-          var vg = audioCtx.createGain();
-          vib.connect(vg); vg.connect(osc.frequency);
-          vib.frequency.value = inst.vibrato.f;
-          vg.gain.value = inst.vibrato.d;
-          vib.start(now);
-          oscs[0].vib = vib;
+        var masterFilter = null;
+        if (inst.f) {
+          masterFilter = audioCtx.createBiquadFilter();
+          masterFilter.type = inst.f.t || 'lowpass';
+          masterFilter.frequency.setValueAtTime(inst.f.f, now);
+          if (inst.f.qe) { masterFilter.Q.setValueAtTime(inst.f.q||1, now); masterFilter.Q.linearRampToValueAtTime(inst.f.q*5, now+inst.f.qe); }
+          masterFilter.connect(audioCtx.destination);
         }
-      });
-      activeNotes[idx] = {oscs:oscs, masterFilter:masterFilter, startTime:now};
+        var harmonics = [{m:1,v:1}];
+        if (inst.h) inst.h.forEach(function(h){ harmonics.push(h); });
+        var oscs = [];
+        harmonics.forEach(function(harm, hi){
+          var osc = audioCtx.createOscillator();
+          var gain = audioCtx.createGain();
+          var dest = masterFilter || audioCtx.destination;
+          osc.connect(gain); gain.connect(dest);
+          osc.type = inst.t;
+          osc.frequency.setValueAtTime(freq*harm.m, now);
+          var maxG = inst.g * harm.v;
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.linearRampToValueAtTime(maxG, now+inst.a);
+          osc.start(now);
+          oscs.push({osc:osc, gain:gain, maxG:maxG});
+          if (hi === 0 && inst.vibrato) {
+            var vib = audioCtx.createOscillator();
+            var vg = audioCtx.createGain();
+            vib.connect(vg); vg.connect(osc.frequency);
+            vib.frequency.value = inst.vibrato.f;
+            vg.gain.value = inst.vibrato.d;
+            vib.start(now);
+            oscs[0].vib = vib;
+          }
+        });
+        activeNotes[idx] = {oscs:oscs, masterFilter:masterFilter, startTime:now};
 
-      addVizNote(idx, 0.25);
-      var ks = document.getElementById('musicKeys').children;
-      if(ks[idx]){ ks[idx].classList.add('pressed'); }
+        addVizNote(idx, 0.25);
+        var ks = document.getElementById('musicKeys').children;
+        if(ks[idx]){ ks[idx].classList.add('pressed'); }
+      });
     }
 
     function releaseNote(idx){
@@ -14007,9 +14018,11 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
       document.getElementById('musicStopBtn').style.display = '';
       var pw = document.getElementById('musicProgressWrap');
       if(pw) pw.style.display = 'block';
-      pianoInitAudio();
-      humanizeSong();
-      setTimeout(function(){ if(autoPlaying) playSongStep(); }, 300);
+      pianoEnsureReady(function(){
+        pianoInitAudio();
+        humanizeSong();
+        setTimeout(function(){ if(autoPlaying) playSongStep(); }, 300);
+      });
     }
 
     function renderKeys(){
