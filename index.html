@@ -13491,7 +13491,16 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
     var currentOctave = 2;
     var audioCtx = null;
     function pianoGetAudioCtx(){
-      audioCtx = getSharedAudioCtx();
+      if(window.audioCtx){
+        audioCtx = window.audioCtx;
+        return audioCtx;
+      }
+      try{
+        window.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }catch(e){
+        window.audioCtx = null;
+      }
+      audioCtx = window.audioCtx;
       return audioCtx;
     }
     function pianoEnsureReady(cb){
