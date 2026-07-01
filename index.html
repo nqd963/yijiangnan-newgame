@@ -3532,6 +3532,7 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
       </div>
       <div class="music-keys" id="musicKeys"></div>
       <div class="music-hint">点击琴弦 · 键盘 A W S E D F T G Y H U J · 12音半音阶 · 音符坠落可视化</div>
+      <div id="musicDebugPanel" style="margin-top:.6rem;padding:.5rem .7rem;border:1px solid rgba(201,168,76,.18);border-radius:8px;background:rgba(0,0,0,.18);font-size:.55rem;line-height:1.7;color:var(--text-dim);text-align:left;white-space:pre-wrap;">音乐调试面板初始化中...</div>
     </div>
   </div>
 
@@ -13823,6 +13824,7 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
     function triggerNote(idx, beats, oct, vel){
       pianoPlayNote(idx, oct, vel);
       addVizNote(idx, beats || 0.5);
+      updateMusicDebug('triggerNote:'+idx);
       var ks = document.getElementById('musicKeys').children;
       if(ks[idx]){ ks[idx].classList.add('pressed');
         setTimeout(function(){ ks[idx].classList.remove('pressed'); }, 150); }
@@ -13832,6 +13834,7 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
     var activeNotes = {};
 
     function startNote(idx, oct){
+      updateMusicDebug('startNote request:'+idx);
       pianoEnsureReady(function(){
         if(activeNotes[idx]) releaseNote(idx);
         pianoInitAudio();
@@ -13877,6 +13880,7 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
         activeNotes[idx] = {oscs:oscs, masterFilter:masterFilter, startTime:now};
 
         addVizNote(idx, 0.25);
+        updateMusicDebug('startNote active:'+idx);
         var ks = document.getElementById('musicKeys').children;
         if(ks[idx]){ ks[idx].classList.add('pressed'); }
       });
@@ -13915,7 +13919,27 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
       progressBar = document.getElementById('musicProgressFill');
       progressLabel = document.getElementById('musicProgressLabel');
     }
+    function updateMusicDebug(extra){
+      var panel = document.getElementById('musicDebugPanel');
+      if(!panel) return;
+      var ctx = audioCtx || null;
+      var musicView = document.getElementById('viewMusic');
+      var lines = [];
+      lines.push('viewMusic.active: ' + !!(musicView && musicView.classList.contains('active')));
+      lines.push('audioCtx.exists: ' + !!ctx);
+      lines.push('audioCtx.state: ' + (ctx ? ctx.state : 'null'));
+      lines.push('autoPlaying: ' + !!autoPlaying);
+      lines.push('autoIdx: ' + autoIdx);
+      lines.push('vizCtx.exists: ' + !!vizCtx);
+      lines.push('vizAnimId.exists: ' + !!vizAnimId);
+      lines.push('activeNotes: ' + Object.keys(activeNotes || {}).length);
+      lines.push('currentInst: ' + currentInst);
+      lines.push('currentOctave: ' + currentOctave);
+      if(extra) lines.push('event: ' + extra);
+      panel.textContent = lines.join('\n');
+    }
     initProgressUI();
+    updateMusicDebug('init');
 
     function updateProgress(pct, label){
       if(progressBar) progressBar.style.width = pct + '%';
@@ -13932,6 +13956,7 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
       document.getElementById('musicSong').disabled = false;
       var pw = document.getElementById('musicProgressWrap');
       if(pw) pw.style.display = 'none';
+      updateMusicDebug('stopAuto');
     }
 
     /* ══════ 自然化演奏引擎 ══════ */
@@ -14013,6 +14038,7 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
     function startAuto(){
       var sel = document.getElementById('musicSong');
       var songKey = sel.value;
+      updateMusicDebug('startAuto click');
       if(!songKey || !songs[songKey]) return;
       var song = songs[songKey];
       currentTempo = song.bpm;
@@ -14109,10 +14135,11 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
         releaseAllNotes();
         stopViz();
         if(autoPlaying) stopAuto();
+        updateMusicDebug('view inactive');
       } else {
         audioCtx = pianoGetAudioCtx();
-        if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-        setTimeout(initViz, 50);
+        if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(function(){});
+        setTimeout(function(){ initViz(); updateMusicDebug('view active'); }, 50);
       }
     });
     obs.observe(musicView, {attributes:true,attributeFilter:['class']});
