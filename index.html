@@ -3941,6 +3941,15 @@ body.sg-float-active .sg-tooltip:hover{opacity:0!important;visibility:hidden!imp
           if(prev) prev.classList.remove('active');
           mpHome.style.display = 'none';
           viewEl.classList.add('active');
+          if(view === 'music'){
+            setTimeout(function(){
+              try{
+                if(window._musicEnsureReady) window._musicEnsureReady(function(){});
+                if(window._musicInitViz) window._musicInitViz();
+                if(window._musicRenderKeys) window._musicRenderKeys();
+              }catch(e){ console.warn('[音乐页初始化] 失败:', e); }
+            }, 50);
+          }
           mpTitle.textContent = viewNames[view] || '填词小工具';
           mpBack.innerHTML = '\u2039';
         }
@@ -14087,6 +14096,12 @@ html2 += '<div class="sg-cs-portrait-card '+cssClass+'" data-char="'+ch.id+'">' 
 
     document.getElementById('musicPlayBtn').addEventListener('click', startAuto);
     document.getElementById('musicStopBtn').addEventListener('click', stopAuto);
+
+    if(typeof window !== 'undefined'){
+      window._musicInitViz = initViz;
+      window._musicRenderKeys = renderKeys;
+      window._musicEnsureReady = pianoEnsureReady;
+    }
 
     var musicView = document.getElementById('viewMusic');
     var obs = new MutationObserver(function(){
